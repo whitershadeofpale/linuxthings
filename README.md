@@ -1,7 +1,9 @@
 # linuxthings
 
 # Prompt-1
-export PS1="\[\e[32m\]\u\[\e[m\]\[\e[31m\]@\[\e[m\]\[\e[32m\]\h\[\e[m\]\[\e[34m\]:\[\e[m\]\[\e[30;47m\]\w\[\e[m\]\[\e[34m\][\[\e[m\]\A\[\e[34m\]]\[\e[m\]\[\e[31m\]\\$\[\e[m\] "
+![Prompt-1](prompt1.png)
+[prompt1.txt](prompt1.txt)
 
 # Prompt-2
-PS1='[\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;31m\]\h\[\e[0m\] \w] [\[\e[0;34m\]\A\[\e[0m\]] [\[\e[0;32m\]h:\!\[\e[0m\]] \[\e[43;1;33m\]\$\[\e[0m\] '
+![Prompt-2](prompt2.png)
+[prompt2.txt](prompt2.txt)
