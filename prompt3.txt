@@ -1,0 +1,58 @@
+preexec_active=0
+# Function to calculate and display command duration
+function preexec() {
+    if [[ $preexec_active -eq 0 ]]; then
+	export TIMER_START=$(date +%s%N)
+	preexec_active=1
+    fi
+}
+
+function precmd() {
+    # Calculate duration in seconds and milliseconds
+    #if [ -n "$TIMER_START" ]; then
+        local TIMER_END=$(date +%s%N)
+        local DURATION=$(( (TIMER_END - TIMER_START) / 1000000 ))  # Convert nanoseconds to milliseconds
+        if (( DURATION > 1000 )); then
+            export DURATION_DISPLAY="$((DURATION / 1000))s"
+        else
+            export DURATION_DISPLAY="${DURATION}ms"
+        fi
+    #else
+    #    DURATION_DISPLAY="0ms"
+    #fi
+
+    local term_width=$(tput cols)  # Get terminal width
+
+    # Left section: current working directory in blue
+    local cwd="\[\e[1;34m\]\w\[\e[0m\]"
+
+    # Right section: date and time in green
+    local datetime="$(date +'%Y-%m-%d %H:%M:%S')"
+    local datetime_length=${#datetime}
+
+    # Calculate padding to right-align the date and time
+    local padding=$((term_width - datetime_length))
+
+    # Ensure the padding is valid
+    if (( padding < 0 )); then
+        padding=0
+    fi
+
+    # First line: Left (cwd) and right (datetime)
+    PS1="[${cwd}]\[\e[${padding}G\]\[\e[1;32m\]${datetime}\[\e[0m\]\n"
+
+    # Second line: Command duration + "$" prompt
+    PS1+="\[\e[1;36m\]${DURATION_DISPLAY}\[\e[0m\] $ "
+
+    preexec_active=0
+}
+
+trap 'preexec' DEBUG
+PROMPT_COMMAND=precmd
+
+alias n=gnome-text-editor
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
+# setopt autolist
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
